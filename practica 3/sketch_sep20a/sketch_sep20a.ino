@@ -1,23 +1,25 @@
-const int inputPin = 2;       // Señal de contraseña correcta
-const int motorHorario = 3;   // Sentido horario
+const int inputPin = A2;       // Señal de contraseña correcta (ahora en pin analógico A2)
+const int motorHorario = 3;    // Sentido horario
 const int motorAntihorario = 4; // Sentido antihorario
-const int contadorAsc = 5;    // Pulso para contador ascendente
+const int contadorAsc = 5;     // Pulso para contador ascendente
+
+bool ejecutado = false;        // Variable de control para ejecutar solo una vez
 
 void setup() {
-  pinMode(inputPin, INPUT);
+  pinMode(inputPin, INPUT);    // Configura A2 como entrada
   pinMode(motorHorario, OUTPUT);
   pinMode(motorAntihorario, OUTPUT);
   pinMode(contadorAsc, OUTPUT);
   
-  // Inicialmente apagamos todo
   digitalWrite(motorHorario, LOW);
   digitalWrite(motorAntihorario, LOW);
   digitalWrite(contadorAsc, LOW);
 }
 
 void loop() {
-  // Si recibimos señal de contraseña correcta (HIGH)
-  if (digitalRead(inputPin) == HIGH) {
+  // Si recibimos señal de contraseña correcta (HIGH) y aún no se ha ejecutado
+  if (digitalRead(inputPin) == HIGH && !ejecutado) {
+    ejecutado = true;  // Marcamos como ejecutado
     
     // Delay inicial de 5 segundos
     delay(5000);
@@ -48,4 +50,6 @@ void loop() {
     // Apagar motor antihorario
     digitalWrite(motorAntihorario, LOW);
   }
+  
+  // Después de ejecutar una vez, el loop no hará nada más
 }
